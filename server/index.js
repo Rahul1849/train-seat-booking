@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const cors = require("cors"); // <-- add this
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
@@ -20,7 +21,14 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS removed for personal project - allows all origins
+// CORS middleware
+app.use(
+  cors({
+    origin: "https://train-seat-booking-liard.vercel.app", // your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true, // allow cookies/auth headers if needed
+  })
+);
 
 // Body parsing middleware
 app.use(express.json({ limit: "10mb" }));
@@ -48,7 +56,6 @@ app.use("*", (req, res) => {
 app.use((error, req, res, next) => {
   console.error("Global error handler:", error);
 
-  // Don't leak error details in production
   const message =
     process.env.NODE_ENV === "production"
       ? "Internal server error"
