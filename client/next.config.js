@@ -4,19 +4,18 @@ const nextConfig = {
   swcMinify: true,
   env: {
     NEXT_PUBLIC_API_URL:
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+      process.env.NEXT_PUBLIC_API_URL ||
+      "https://train-seat-booking-production.up.railway.app/api",
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://localhost:5000/api/:path*",
-      },
-    ];
-  },
+  // Remove rewrites for production - they cause 404 errors
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/:path*",
+  //       destination: "http://localhost:5000/api/:path*",
+  //     },
+  //   ];
+  // },
 };
 
 module.exports = nextConfig;
-
-
-
