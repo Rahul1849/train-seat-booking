@@ -1,6 +1,6 @@
 # 🚂 Train Seat Booking System
 
-A comprehensive full-stack web application for train seat reservation, built with modern technologies and best practices. This project demonstrates advanced React development, Node.js backend architecture, and PostgreSQL database management.
+A comprehensive full-stack web application for train seat reservation, built with modern technologies and best practices. This project demonstrates Next.js, Node.js backend architecture, and PostgreSQL database management.
 
 
 ## 🌟 Live Demo
