@@ -28,31 +28,28 @@ app.use(
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
 
-      const allowedOrigins =
-        process.env.NODE_ENV === "production"
-          ? [
-              "https://train-seat-booking-liard.vercel.app",
-              /^https:\/\/train-seat-booking-.*\.vercel\.app$/,
-            ]
-          : ["http://localhost:3000"];
-
-      // Check if origin matches any allowed pattern
-      const isAllowed = allowedOrigins.some((allowedOrigin) => {
-        if (typeof allowedOrigin === "string") {
-          return origin === allowedOrigin;
-        } else if (allowedOrigin instanceof RegExp) {
-          return allowedOrigin.test(origin);
+      // In production, allow all Vercel domains
+      if (process.env.NODE_ENV === "production") {
+        // Allow any vercel.app domain
+        if (origin.includes(".vercel.app")) {
+          return callback(null, true);
         }
-        return false;
-      });
-
-      if (isAllowed) {
-        callback(null, true);
+        // Also allow the specific domain you mentioned
+        if (origin === "https://train-seat-booking-liard.vercel.app") {
+          return callback(null, true);
+        }
       } else {
-        callback(new Error("Not allowed by CORS"));
+        // In development, allow localhost
+        if (origin === "http://localhost:3000") {
+          return callback(null, true);
+        }
       }
+
+      callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
