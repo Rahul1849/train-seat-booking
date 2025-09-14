@@ -1,7 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const cors = require("cors"); // <-- add this
+const cors = require("cors");
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
@@ -16,19 +16,13 @@ app.use(helmet());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 100,
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(limiter);
 
-// CORS middleware
-app.use(
-  cors({
-    origin: "https://train-seat-booking-liard.vercel.app", // your frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true, // allow cookies/auth headers if needed
-  })
-);
+// ✅ Allow all origins (temporary for demo)
+app.use(cors());
 
 // Body parsing middleware
 app.use(express.json({ limit: "10mb" }));
