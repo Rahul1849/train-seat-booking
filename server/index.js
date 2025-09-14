@@ -24,13 +24,34 @@ app.use(limiter);
 // CORS configuration
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? [
-            "https://train-seat-booking-liard.vercel.app",
-            "https://train-seat-booking-n5deco7rm-rahul-kumars-projects-02434897.vercel.app",
-          ]
-        : ["http://localhost:3000"],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      const allowedOrigins =
+        process.env.NODE_ENV === "production"
+          ? [
+              "https://train-seat-booking-liard.vercel.app",
+              /^https:\/\/train-seat-booking-.*\.vercel\.app$/,
+            ]
+          : ["http://localhost:3000"];
+
+      // Check if origin matches any allowed pattern
+      const isAllowed = allowedOrigins.some((allowedOrigin) => {
+        if (typeof allowedOrigin === "string") {
+          return origin === allowedOrigin;
+        } else if (allowedOrigin instanceof RegExp) {
+          return allowedOrigin.test(origin);
+        }
+        return false;
+      });
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
