@@ -26,7 +26,10 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? ["https://your-domain.com"]
+        ? [
+            "https://train-seat-booking-liard.vercel.app",
+            "https://train-seat-booking-n5deco7rm-rahul-kumars-projects-02434897.vercel.app",
+          ]
         : ["http://localhost:3000"],
     credentials: true,
   })
@@ -78,5 +81,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-
-
