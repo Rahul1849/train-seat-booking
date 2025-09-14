@@ -1,0 +1,21 @@
+{
+  "name": "train-seat-booking",
+  "version": "1.0.0",
+  "description": "Train seat booking system with 80 seats (7 per row, last row 3 seats)",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "keywords": ["train", "booking", "seats", "nextjs", "express", "postgresql"],
+  "author": "Rahul Kumar",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
