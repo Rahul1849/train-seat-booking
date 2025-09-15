@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import AuthForm from "../components/AuthForm";
-import { authAPI } from "../lib/mockApi";
+import { authAPI } from "../lib/api";
 import { setAuthToken, setUser, isAuthenticated } from "../lib/auth";
 
 export default function Register() {

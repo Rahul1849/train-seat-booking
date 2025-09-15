@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
-import { seatsAPI } from "../lib/mockApi";
+import { seatsAPI } from "../lib/api";
 import { isAuthenticated } from "../lib/auth";
 import SeatMap from "../components/SeatMap";
 import { CheckCircle, AlertCircle, RefreshCw } from "lucide-react";
