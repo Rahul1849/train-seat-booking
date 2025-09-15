@@ -52,6 +52,32 @@ app.get("/test", (req, res) => {
   });
 });
 
+// Database initialization endpoint
+app.get("/init-db", async (req, res) => {
+  try {
+    const pool = require("./database/connection");
+    const fs = require("fs");
+    const path = require("path");
+
+    // Read and execute schema
+    const schemaPath = path.join(__dirname, "database", "schema.sql");
+    const schema = fs.readFileSync(schemaPath, "utf8");
+
+    await pool.query(schema);
+
+    res.json({
+      message: "Database initialized successfully!",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Database initialization error:", error);
+    res.status(500).json({
+      error: "Database initialization failed",
+      details: error.message,
+    });
+  }
+});
+
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/seats", seatRoutes);
