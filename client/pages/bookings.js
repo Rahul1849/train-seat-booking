@@ -6,13 +6,15 @@ import { isAuthenticated } from "../lib/auth";
 import { Calendar, MapPin, Trash2, RefreshCw, AlertCircle } from "lucide-react";
 
 export default function MyBookings() {
+  const [mounted, setMounted] = useState(false);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect if not authenticated
+    setMounted(true);
+
     if (!isAuthenticated()) {
       router.push("/login");
       return;
@@ -25,7 +27,7 @@ export default function MyBookings() {
     try {
       setLoading(true);
       const response = await seatsAPI.getMyBookings();
-      setBookings(response.data.bookings);
+      setBookings(response.data.bookings || []);
     } catch (error) {
       console.error("Error fetching bookings:", error);
       toast.error("Failed to load bookings. Please try again.");
@@ -35,15 +37,13 @@ export default function MyBookings() {
   };
 
   const handleCancelBooking = async (bookingId) => {
-    if (!confirm("Are you sure you want to cancel this booking?")) {
-      return;
-    }
+    if (!confirm("Are you sure you want to cancel this booking?")) return;
 
     try {
       setCancelling(bookingId);
       await seatsAPI.cancelBooking(bookingId);
       toast.success("Booking cancelled successfully");
-      await fetchBookings(); // Refresh the list
+      await fetchBookings();
     } catch (error) {
       console.error("Cancel booking error:", error);
       const errorMessage =
@@ -77,9 +77,8 @@ export default function MyBookings() {
     }
   };
 
-  if (!isAuthenticated()) {
-    return null; // Will redirect
-  }
+  if (!mounted) return null;
+  if (!isAuthenticated()) return null;
 
   if (loading) {
     return (
@@ -94,6 +93,7 @@ export default function MyBookings() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Bookings</h1>
@@ -108,6 +108,7 @@ export default function MyBookings() {
         </button>
       </div>
 
+      {/* No bookings */}
       {bookings.length === 0 ? (
         <div className="text-center py-12">
           <AlertCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
@@ -224,7 +225,3 @@ export default function MyBookings() {
     </div>
   );
 }
-
-
-
-

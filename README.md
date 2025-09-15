@@ -2,7 +2,6 @@
 
 A comprehensive full-stack web application for train seat reservation, built with modern technologies and best practices. This project demonstrates Next.js, Node.js backend architecture, and PostgreSQL database management.
 
-
 ## 🌟 Live Demo
 
 **🚀 [View Live Application](https://your-app.vercel.app)** | **📊 [API Documentation](https://your-backend.railway.app/health)**
@@ -322,5 +321,3 @@ CLIENT_URL=https://your-frontend-url.vercel.app
 - **Analytics**: User behavior tracking and insights
 
 ---
-
-

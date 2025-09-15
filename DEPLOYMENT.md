@@ -44,7 +44,6 @@ JWT_SECRET=<secure-random-key>
 NODE_ENV=production
 CLIENT_URL=https://<frontend-url>.vercel.app
 
-
 API handles authentication, seat booking, cancellations, and retrieval.
 
 CORS configured for frontend origin.
@@ -58,7 +57,6 @@ Next.js frontend deployed on Vercel.
 Environment variable:
 
 NEXT_PUBLIC_API_URL=https://<backend-url>.railway.app
-
 
 Build command: npm run build
 

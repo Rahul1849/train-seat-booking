@@ -300,7 +300,3 @@ const AuthForm = ({ type, onSubmit, loading, error }) => {
 };
 
 export default AuthForm;
-
-
-
-

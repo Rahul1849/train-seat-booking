@@ -11,11 +11,20 @@
     "start": "cd server && npm start",
     "install-all": "npm install && cd server && npm install && cd ../client && npm install"
   },
-  "keywords": ["train", "booking", "seats", "nextjs", "express", "postgresql"],
+  "keywords": [
+    "train",
+    "booking",
+    "seats",
+    "nextjs",
+    "express",
+    "postgresql"
+  ],
   "author": "Rahul Kumar",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5"
   }
 }
-

@@ -1,7 +1,7 @@
 const express = require("express");
+const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const cors = require("cors");
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
@@ -16,13 +16,20 @@ app.use(helmet());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: 100, // limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(limiter);
 
-// ✅ Allow all origins (temporary for demo)
-app.use(cors());
+// CORS configuration - Simplified for debugging
+app.use(
+  cors({
+    origin: true, // Allow all origins temporarily for debugging
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Body parsing middleware
 app.use(express.json({ limit: "10mb" }));
@@ -50,6 +57,7 @@ app.use("*", (req, res) => {
 app.use((error, req, res, next) => {
   console.error("Global error handler:", error);
 
+  // Don't leak error details in production
   const message =
     process.env.NODE_ENV === "production"
       ? "Internal server error"
