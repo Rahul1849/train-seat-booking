@@ -44,6 +44,14 @@ app.get("/health", (req, res) => {
   });
 });
 
+// Test endpoint
+app.get("/test", (req, res) => {
+  res.json({
+    message: "Server is working!",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/seats", seatRoutes);
@@ -56,6 +64,7 @@ app.use("*", (req, res) => {
 // Global error handler
 app.use((error, req, res, next) => {
   console.error("Global error handler:", error);
+  console.error("Error stack:", error.stack);
 
   // Don't leak error details in production
   const message =
@@ -70,10 +79,20 @@ app.use((error, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
+
+  // Test database connection
+  try {
+    const pool = require("./database/connection");
+    const client = await pool.connect();
+    console.log("Database connection successful!");
+    client.release();
+  } catch (error) {
+    console.error("Database connection failed:", error);
+  }
 });
 
 module.exports = app;
