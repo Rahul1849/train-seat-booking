@@ -9,7 +9,7 @@ export const authAPI = {
       setTimeout(() => {
         resolve({
           data: {
-            user: { id: 1, name: userData.username, email: userData.email },
+            user: { id: 1, username: userData.username, email: userData.email },
             token: "fake-jwt-token",
           },
         });
@@ -22,7 +22,7 @@ export const authAPI = {
       setTimeout(() => {
         resolve({
           data: {
-            user: { id: 1, name: "Demo User", email: credentials.email },
+            user: { id: 1, username: "Demo User", email: credentials.email },
             token: "fake-jwt-token",
           },
         });
