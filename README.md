@@ -4,7 +4,9 @@ A comprehensive full-stack web application for train seat reservation, built wit
 
 ## 🌟 Live Demo
 
-**🚀 [View Live Application](https://your-app.vercel.app)** | **📊 [API Documentation](https://your-backend.railway.app/health)**
+**🚀 [View Live Application](https://train-seat-booking-liard.vercel.app/)**
+
+> **Note**: Currently using mock API for demonstration. Backend API available at: `https://train-seat-booking-production.up.railway.app/`
 
 ---
 
@@ -68,7 +70,7 @@ This project implements a sophisticated train seat booking system with intellige
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/train-seat-booking.git
+   git clone https://github.com/Rahul1849/train-seat-booking
    cd train-seat-booking
    ```
 
@@ -264,7 +266,7 @@ DB_USER=postgres
 DB_PASSWORD=your-database-password
 JWT_SECRET=your-secret-key
 NODE_ENV=production
-CLIENT_URL=https://your-frontend-url.vercel.app
+CLIENT_URL=https://train-seat-booking-liard.vercel.app/
 ```
 
 ---

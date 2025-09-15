@@ -28,6 +28,11 @@ const SeatMap = ({ seats, selectedSeats, onSeatSelect, maxSeats = 7 }) => {
     }
   }, [seats]);
 
+  /**
+   * Determines the visual status of a seat based on availability and selection
+   * @param {Object} seat - Seat object with id and isAvailable properties
+   * @returns {string} - Status: 'occupied', 'selected', or 'available'
+   */
   const getSeatStatus = (seat) => {
     if (!seat.isAvailable) {
       return "occupied";
@@ -38,6 +43,11 @@ const SeatMap = ({ seats, selectedSeats, onSeatSelect, maxSeats = 7 }) => {
     return "available";
   };
 
+  /**
+   * Handles seat click events
+   * Allows deselection of auto-selected seats but not manual selection
+   * @param {Object} seat - Clicked seat object
+   */
   const handleSeatClick = (seat) => {
     // In the demo, seats are auto-selected, but we can still allow manual deselection
     if (selectedSeats.includes(seat.id)) {

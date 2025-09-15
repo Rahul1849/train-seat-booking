@@ -1,7 +1,17 @@
-// Mock API for reliable functionality
+/**
+ * Mock API for reliable functionality
+ * Provides simulated backend responses for development and demonstration
+ * Uses in-memory storage for data persistence during session
+ */
+
+// In-memory storage for mock data
 let allBookings = [];
 let bookedSeats = new Set();
 
+/**
+ * Authentication API mock
+ * Simulates user registration and login with JWT tokens
+ */
 export const authAPI = {
   register: (userData) =>
     new Promise((resolve) => {
@@ -30,7 +40,15 @@ export const authAPI = {
     }),
 };
 
+/**
+ * Seats API mock
+ * Handles seat management, booking, and availability
+ */
 export const seatsAPI = {
+  /**
+   * Generates 80 seats in 12 rows (11 rows of 7 seats + 1 row of 3 seats)
+   * @returns {Promise} - Resolves with seat data structure
+   */
   getAllSeats: () =>
     new Promise((resolve) => {
       const seatsPerRow = 7;
@@ -38,6 +56,8 @@ export const seatsAPI = {
       let seatNumber = 1;
       const totalRows = Math.ceil(totalSeats / seatsPerRow);
       const seats = {};
+
+      // Generate seats row by row
       for (let r = 1; r <= totalRows; r++) {
         seats[r] = [];
         for (let c = 1; c <= seatsPerRow && seatNumber <= totalSeats; c++) {
@@ -54,10 +74,17 @@ export const seatsAPI = {
       setTimeout(() => resolve({ data: { seats } }), 300);
     }),
 
+  /**
+   * Books selected seats and creates booking record
+   * @param {Array} seatIds - Array of seat IDs to book
+   * @returns {Promise} - Resolves with booking confirmation
+   */
   bookSeats: (seatIds) =>
     new Promise((resolve) => {
+      // Mark seats as booked in memory
       seatIds.forEach((id) => bookedSeats.add(id));
 
+      // Create booking record
       const booking = {
         id: "B" + Math.floor(Math.random() * 10000),
         booking_reference: "BK" + Math.floor(Math.random() * 10000),

@@ -1,3 +1,17 @@
+/**
+ * Seat Booking Page
+ *
+ * Features:
+ * - Interactive seat map with 80 seats across 12 rows
+ * - Intelligent seat selection algorithm (prioritizes same-row seating)
+ * - Real-time seat availability updates
+ * - Booking confirmation with reference number
+ * - Seat reset functionality for testing
+ *
+ * @author Rahul Kumar
+ * @version 1.0.0
+ */
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
@@ -40,9 +54,16 @@ export default function BookPage() {
 
   const handleSeatSelect = (seatIds) => setSelectedSeats(seatIds);
 
+  /**
+   * Handles automatic seat selection when user changes number of seats
+   * Implements intelligent algorithm that prioritizes same-row seating
+   * @param {number} num - Number of seats to select (1-7)
+   */
   const handleNumberOfSeatsChange = (num) => {
+    // Validate seat count limits
     if (num < 1 || num > 7) return;
 
+    // Get all available seats, excluding already selected ones
     const availableSeats = Object.values(seats || {})
       .flat()
       .filter((s) => s.isAvailable && !selectedSeats.includes(s.id))
@@ -52,23 +73,27 @@ export default function BookPage() {
           : a.seatPosition - b.seatPosition
       );
 
+    // Check if enough seats are available
     if (availableSeats.length < num) {
       toast.error(`Only ${availableSeats.length} seats available`);
       return;
     }
 
+    // Group available seats by row number for same-row priority
     const rowGroups = {};
     availableSeats.forEach((s) => {
       if (!rowGroups[s.rowNumber]) rowGroups[s.rowNumber] = [];
       rowGroups[s.rowNumber].push(s);
     });
 
+    // Find the best row with enough consecutive seats
     let bestRowSeats = [];
     Object.values(rowGroups).forEach((rowSeats) => {
       if (rowSeats.length >= num && rowSeats.length > bestRowSeats.length)
         bestRowSeats = rowSeats.slice(0, num);
     });
 
+    // Select seats: prefer same-row, fallback to any available
     const selectedSeatIds =
       bestRowSeats.length === num
         ? bestRowSeats.map((s) => s.id)
@@ -77,16 +102,24 @@ export default function BookPage() {
     setSelectedSeats(selectedSeatIds);
   };
 
+  /**
+   * Handles seat booking process
+   * Validates selection, calls API, and updates UI state
+   */
   const handleBookSeats = async () => {
+    // Validate that at least one seat is selected
     if (selectedSeats.length === 0)
       return toast.error("Select at least one seat");
+
     try {
       setBooking(true);
+      // Call API to book selected seats
       const response = await seatsAPI.bookSeats(selectedSeats);
       setBookingData(response.data.booking);
       setBookingSuccess(true);
       setSelectedSeats([]);
       toast.success("Seats booked successfully!");
+      // Refresh seat map to show updated availability
       await fetchSeats();
     } catch (error) {
       console.error(error);
