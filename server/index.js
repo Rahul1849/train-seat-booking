@@ -46,8 +46,18 @@ app.get("/health", (req, res) => {
 
 // Test endpoint
 app.get("/test", (req, res) => {
+  console.log("Test endpoint called");
   res.json({
     message: "Server is working!",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Simple test endpoint
+app.get("/", (req, res) => {
+  res.json({
+    message: "Train Seat Booking API",
+    version: "1.0.0",
     timestamp: new Date().toISOString(),
   });
 });
@@ -82,8 +92,9 @@ app.get("/init-db", async (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/seats", seatRoutes);
 
-// 404 handler
+// 404 handler (must be last)
 app.use("*", (req, res) => {
+  console.log("404 - Route not found:", req.method, req.originalUrl);
   res.status(404).json({ error: "Route not found" });
 });
 
